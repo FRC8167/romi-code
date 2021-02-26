@@ -20,23 +20,23 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class OnBoardIO extends SubsystemBase {
 	private final DigitalInput m_buttonA = new DigitalInput(0);
 	private final DigitalOutput m_yellowLed = new DigitalOutput(3);
-
+	
 	// DIO 1
 	private DigitalInput m_buttonB;
 	private DigitalOutput m_greenLed;
-
+	
 	// DIO 2
 	private DigitalInput m_buttonC;
 	private DigitalOutput m_redLed;
-
+	
 	private static final double MESSAGE_INTERVAL = 1.0;
 	private double m_nextMessageTime;
-
+	
 	public enum ChannelMode {
 		INPUT,
 		OUTPUT
 	}
-
+	
 	/**
 	 * Constructor.
 	 *
@@ -49,25 +49,25 @@ public class OnBoardIO extends SubsystemBase {
 		} else {
 			m_greenLed = new DigitalOutput(1);
 		}
-
+		
 		if (dio2 == ChannelMode.INPUT) {
 			m_buttonC = new DigitalInput(2);
 		} else {
 			m_redLed = new DigitalOutput(2);
 		}
 	}
-
+	
 	/** Gets if the A button is pressed. */
 	public boolean getButtonAPressed() {
 		return m_buttonA.get();
 	}
-
+	
 	/** Gets if the B button is pressed. */
 	public boolean getButtonBPressed() {
 		if (m_buttonB != null) {
 			return m_buttonB.get();
 		}
-
+		
 		double currentTime = Timer.getFPGATimestamp();
 		if (currentTime > m_nextMessageTime) {
 			DriverStation.reportError("Button B was not configured", true);
@@ -75,13 +75,13 @@ public class OnBoardIO extends SubsystemBase {
 		}
 		return false;
 	}
-
+	
 	/** Gets if the C button is pressed. */
 	public boolean getButtonCPressed() {
 		if (m_buttonC != null) {
 			return m_buttonC.get();
 		}
-
+		
 		double currentTime = Timer.getFPGATimestamp();
 		if (currentTime > m_nextMessageTime) {
 			DriverStation.reportError("Button C was not configured", true);
@@ -89,7 +89,7 @@ public class OnBoardIO extends SubsystemBase {
 		}
 		return false;
 	}
-
+	
 	/** Sets the green LED. */
 	public void setGreenLed(boolean value) {
 		if (m_greenLed != null) {
@@ -102,7 +102,7 @@ public class OnBoardIO extends SubsystemBase {
 			}
 		}
 	}
-
+	
 	/** Sets the red LED. */
 	public void setRedLed(boolean value) {
 		if (m_redLed != null) {
@@ -115,12 +115,12 @@ public class OnBoardIO extends SubsystemBase {
 			}
 		}
 	}
-
+	
 	/** Sets the yellow LED. */
 	public void setYellowLed(boolean value) {
 		m_yellowLed.set(value);
 	}
-
+	
 	@Override
 	public void periodic() {
 		// This method will be called once per scheduler run

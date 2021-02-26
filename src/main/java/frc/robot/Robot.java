@@ -25,12 +25,12 @@ import frc.robot.subsystems.OnBoardIO.ChannelMode;
  */
 public class Robot extends TimedRobot {
 	private Command m_autonomousCommand;
-
+	
 	private final Drivetrain drivetrain = new Drivetrain();
 	private final OnBoardIO onboardIO = new OnBoardIO(ChannelMode.INPUT, ChannelMode.INPUT);
 	
 	private final Joystick controller = new Joystick(0);
-
+	
 	private final SendableChooser<Command> chooser = new SendableChooser<>();
 	
 	/**
@@ -40,16 +40,16 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		drivetrain.setDefaultCommand(new ArcadeDrive(drivetrain, controller));
-		
+				
 		Button onboardButtonA = new Button(onboardIO::getButtonAPressed);
 		onboardButtonA.whenActive(new PrintCommand("Button A Pressed")).whenInactive(new PrintCommand("Button A Released"));
-
+		
 		// Setup SmartDashboard options
 		chooser.setDefaultOption("Auto Routine Distance", new AutonomousDistance(drivetrain));
 		chooser.addOption("Auto Routine Time", new AutonomousTime(drivetrain));
 		SmartDashboard.putData(chooser);
 	}
-
+	
 	/**
 	 * This function is called every robot packet, no matter the mode. Use this for items like
 	 * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
@@ -65,31 +65,30 @@ public class Robot extends TimedRobot {
 		// block in order for anything in the Command-based framework to work.
 		CommandScheduler.getInstance().run();
 	}
-
+	
 	/** This function is called once each time the robot enters Disabled mode. */
 	@Override
 	public void disabledInit() {}
-
+	
 	@Override
 	public void disabledPeriodic() {}
-
+	
 	/** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
 	@Override
 	public void autonomousInit() {
-
 		// Get selected routine from the SmartDashboard
 		m_autonomousCommand = chooser.getSelected();
-
+		
 		// schedule the autonomous command (example)
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.schedule();
 		}
 	}
-
+	
 	/** This function is called periodically during autonomous. */
 	@Override
 	public void autonomousPeriodic() {}
-
+	
 	@Override
 	public void teleopInit() {
 		// This makes sure that the autonomous stops running which will
@@ -100,17 +99,17 @@ public class Robot extends TimedRobot {
 			m_autonomousCommand.cancel();
 		}
 	}
-
+	
 	/** This function is called periodically during operator control. */
 	@Override
 	public void teleopPeriodic() {}
-
+	
 	@Override
 	public void testInit() {
 		// Cancels all running commands at the start of test mode.
 		CommandScheduler.getInstance().cancelAll();
 	}
-
+	
 	/** This function is called periodically during test mode. */
 	@Override
 	public void testPeriodic() {}
